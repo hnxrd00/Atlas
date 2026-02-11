@@ -64,6 +64,64 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         console.log('🎉 Dashboard ready!');
 
+        // Setup New Habit modal and button
+        try {
+            const newHabitBtn = document.getElementById('newHabitBtn');
+            const habitModal = document.getElementById('habitModal');
+            const habitModalClose = document.getElementById('habitModalClose');
+            const createHabitBtn = document.getElementById('createHabitBtn');
+
+            const openModal = () => {
+                if (habitModal) {
+                    habitModal.classList.add('active');
+                    habitModal.setAttribute('aria-hidden', 'false');
+                    const nameInput = document.getElementById('habitName');
+                    if (nameInput) nameInput.focus();
+                }
+            };
+
+            const closeModal = () => {
+                if (habitModal) {
+                    habitModal.classList.remove('active');
+                    habitModal.setAttribute('aria-hidden', 'true');
+                }
+            };
+
+            if (newHabitBtn) newHabitBtn.addEventListener('click', openModal);
+            if (habitModalClose) habitModalClose.addEventListener('click', closeModal);
+
+            if (habitModal) {
+                habitModal.addEventListener('click', (e) => {
+                    if (e.target === habitModal) closeModal();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            if (createHabitBtn) {
+                createHabitBtn.addEventListener('click', async () => {
+                    const name = (document.getElementById('habitName') || {}).value || '';
+                    const duration = (document.getElementById('habitDuration') || {}).value || '';
+
+                    // Basic validation
+                    if (!name.trim()) {
+                        alert('Please enter a name for the habit.');
+                        return;
+                    }
+
+                    // TODO: Persist habit via Supabase or other storage
+                    console.log('Creating habit:', { name, duration });
+
+                    // Close modal after create
+                    closeModal();
+                });
+            }
+        } catch (e) {
+            console.warn('Modal setup failed', e);
+        }
+
     } catch (error) {
         console.error('❌ Dashboard error:', error);
         loadingState.innerHTML = '<p style="color: red;">Error loading dashboard. Redirecting...</p>';

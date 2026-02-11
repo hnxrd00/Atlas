@@ -46,6 +46,7 @@
             background: var(--bg-color);
             border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .dark-mode .dashboard-navbar {
@@ -107,6 +108,15 @@
             gap: 20px;
         }
 
+        .dashboard-navbar-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         /* Logout Button - Matches get-started button theme */
         .logout-btn {
             position: relative;
@@ -162,6 +172,82 @@
             background: linear-gradient(135deg, #0a3060 0%, #1a4a90 50%, #2a5ab0 100%);
             border: 2px solid #1f94e0;
             box-shadow: 0 0 20px rgba(15, 122, 201, 0.8), 0 0 40px rgba(15, 122, 201, 0.5);
+        }
+
+        /* New Habit button */
+        .new-habit-btn {
+            appearance: none;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #6b4cff 0%, #3db3ff 100%);
+            box-shadow: 0 6px 20px rgba(75, 88, 255, 0.18), 0 2px 6px rgba(0,0,0,0.12);
+            position: relative;
+            overflow: visible;
+        }
+
+        .new-habit-btn::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            z-index: 0;
+            border-radius: 14px;
+            background: linear-gradient(90deg, rgba(127,91,255,0.18), rgba(73,194,255,0.12));
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .new-habit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(75, 115, 255, 0.22);
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            max-width: 420px;
+            width: 100%;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(10,10,20,0.4);
+            position: relative;
+        }
+
+        .modal-content h3 { margin: 0 0 12px 0; }
+
+        .modal-row { display:flex;flex-direction:column;gap:8px;margin-bottom:12px; }
+
+        .modal-row label { font-weight:600; font-size:0.95rem; }
+
+        .modal-row input { padding:10px 12px;border-radius:8px;border:1px solid var(--border-color);background:transparent;color:var(--text-color); }
+
+        .modal-actions { display:flex;justify-content:flex-end;gap:10px;margin-top:8px; }
+
+        .modal-close {
+            position:absolute;top:10px;right:10px;border:none;background:transparent;font-size:20px;cursor:pointer;color:var(--text-secondary);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .modal-content { background: var(--dark-bg); color: #e9eef9; }
+            .modal-row input { border-color: rgba(255,255,255,0.06); }
         }
 
         .dashboard-content {
@@ -279,6 +365,13 @@
                 padding: 15px;
             }
 
+            .dashboard-navbar-center {
+                position: static;
+                transform: none;
+                justify-content: center;
+                margin-top: 8px;
+            }
+
             .dashboard-content h1 {
                 font-size: 1.5rem;
             }
@@ -296,10 +389,12 @@
             <div class="dashboard-logo">
                 <h3><a href="index.html">Atlas.</a></h3>
             </div>
-            <div class="dashboard-nav-links">
-                <a href="#streaks">📊 Streaks</a>
-            </div>
         </div>
+
+        <div class="dashboard-navbar-center">
+            <a href="#streaks">📊 Streaks</a>
+        </div>
+
         <div class="dashboard-navbar-right">
             <button class="logout-btn" id="logoutBtn">Logout</button>
         </div>
@@ -311,6 +406,11 @@
         </div>
         <div id="dashboardContent" style="display: none;">
             <!-- Dashboard content goes here -->
+            <div class="main-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <h2 style="margin:0">Habits</h2>
+                <button id="newHabitBtn" class="new-habit-btn">+ New Habit</button>
+            </div>
+
             <h1>Welcome to your Dashboard</h1>
             <p id="userEmail"></p>
         </div>
@@ -332,6 +432,28 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
     </button>
+
+    <!-- New Habit Modal -->
+    <div id="habitModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="habitModalTitle">
+            <button class="modal-close" id="habitModalClose" aria-label="Close">×</button>
+            <h3 id="habitModalTitle">Create Habit</h3>
+
+            <div class="modal-row">
+                <label for="habitName">Name</label>
+                <input id="habitName" type="text" placeholder="e.g. Read for 20 minutes">
+            </div>
+
+            <div class="modal-row">
+                <label for="habitDuration">Duration</label>
+                <input id="habitDuration" type="text" placeholder="e.g. 20 minutes / 7 days">
+            </div>
+
+            <div class="modal-actions">
+                <button id="createHabitBtn" class="new-habit-btn">Create</button>
+            </div>
+        </div>
+    </div>
 
     <script src="dashboard.js"></script>
 </body>
