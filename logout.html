@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out | Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/atlas2.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+        * {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-color);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'SN Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .logout-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+            transition: background 0.3s ease;
+            padding: 20px;
+        }
+
+        .dark-mode .logout-container {
+            background: var(--dark-bg);
+        }
+
+        .logout-card {
+            text-align: center;
+            padding: 50px 40px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            max-width: 400px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .dark-mode .logout-card {
+            background: var(--dark-bg-secondary);
+            border-color: var(--dark-border);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logout-card h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            color: var(--heading-color);
+            font-weight: 700;
+        }
+
+        .logout-card p {
+            color: var(--text-secondary);
+            margin: 15px 0;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .logout-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        .redirect-countdown {
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 25px;
+            font-weight: 600;
+        }
+
+        /* Home Link Button - Matches get-started button theme */
+        .home-link {
+            display: inline-block;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            padding: 12px 32px;
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            border: 2px solid #ff7f5c;
+            border-radius: 9.3px;
+            font-weight: 600;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff8a6b 0%, #ff6b4a 50%, #ff5733 100%);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 12px rgba(255, 91, 51, 0.3), 0 0 24px rgba(255, 91, 51, 0.15);
+        }
+
+        .home-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .home-link:hover {
+            background: linear-gradient(135deg, #ff6b4a 0%, #ff5733 50%, #ff4500 100%);
+            border-color: #ff4500;
+            transform: translateY(-3px);
+            box-shadow: 0 0 16px rgba(255, 91, 51, 0.5), 0 0 32px rgba(255, 91, 51, 0.25);
+        }
+
+        .home-link:hover::before {
+            left: 100%;
+        }
+
+        .home-link:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .dark-mode .home-link {
+            background: linear-gradient(135deg, #061f40 0%, #0a3060 50%, #1a4a90 100%);
+            border: 2px solid #0a7ab8;
+            box-shadow: 0 0 15px rgba(15, 122, 201, 0.6), 0 0 30px rgba(15, 122, 201, 0.3);
+        }
+
+        .dark-mode .home-link:hover {
+            background: linear-gradient(135deg, #0a3060 0%, #1a4a90 50%, #2a5ab0 100%);
+            border: 2px solid #1f94e0;
+            box-shadow: 0 0 20px rgba(15, 122, 201, 0.8), 0 0 40px rgba(15, 122, 201, 0.5);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .logout-card {
+                padding: 40px 30px;
+                border-radius: 14px;
+            }
+
+            .logout-card h1 {
+                font-size: 1.8rem;
+            }
+
+            .logout-card p {
+                font-size: 1rem;
+            }
+
+            .logout-icon {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+            }
+
+            .redirect-countdown {
+                font-size: 0.9rem;
+            }
+
+            .home-link {
+                padding: 11px 28px;
+                margin-top: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logout-container {
+                padding: 15px;
+            }
+
+            .logout-card {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .logout-card h1 {
+                font-size: 1.5rem;
+                margin: 0 0 8px 0;
+            }
+
+            .logout-card p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+            }
+
+            .logout-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+
+            .redirect-countdown {
+                font-size: 0.85rem;
+                margin-top: 15px;
+            }
+
+            .home-link {
+                padding: 10px 24px;
+                margin-top: 20px;
+                font-size: 0.95rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <div class="logout-card">
+            <div class="logout-icon">👋</div>
+            <h1>You're Logged Out</h1>
+            <p>Your session has been ended successfully. We hope to see you again soon!</p>
+            <div class="redirect-countdown" id="countdown">
+                Redirecting to home in <span id="timer">5</span> seconds...
+            </div>
+            <a href="index.html" class="home-link">Go to Home</a>
+        </div>
+    </div>
+
+    <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Countdown timer and redirect
+        let seconds = 5;
+        const timerElement = document.getElementById('timer');
+
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            timerElement.textContent = seconds;
+
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
